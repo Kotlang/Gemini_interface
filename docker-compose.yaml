@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+  app1:
+    image: gemini:1.0.1
+    volumes:
+      - myVol:/app
+    networks:
+      - gemini_network
+    expose:
+      - 8501
+    environment:
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+
+  app2:
+    image: gemini:1.0.1
+    volumes:
+      - myVol:/app
+    networks:
+      - gemini_network
+    expose:
+      - 8501
+    environment:
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "8501:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - app1
+      - app2
+    networks:
+      - gemini_network
+
+networks:
+  gemini_network:
+
+volumes:
+  myVol:

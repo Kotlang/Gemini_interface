@@ -3,8 +3,6 @@ import os
 import joblib
 import streamlit as st
 import google.generativeai as genai
-from dotenv import load_dotenv
-load_dotenv()
 GOOGLE_API_KEY=os.environ.get('GOOGLE_API_KEY')
 genai.configure(api_key=GOOGLE_API_KEY)
 
@@ -24,6 +22,19 @@ try:
     past_chats: dict = joblib.load('data/past_chats_list')
 except:
     past_chats = {}
+
+st.set_page_config(page_title="Gemini", layout="wide")
+
+st.markdown("""
+    <style>
+        .reportview-container {
+            margin-top: -2em;
+        }
+        .stDeployButton {display:none;}
+        footer {visibility: hidden;}
+    </style>
+""", unsafe_allow_html=True)
+
 
 # Sidebar allows a list of past chats
 with st.sidebar:

@@ -36,6 +36,15 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
+# Initialize session state variables
+if 'chat_id' not in st.session_state:
+    st.session_state.chat_id = None
+if 'messages' not in st.session_state:
+    st.session_state.messages = []
+if 'gemini_history' not in st.session_state:
+    st.session_state.gemini_history = []
+
+
 def load_chat_history(chat_id):
     try:
         st.session_state.messages = joblib.load(f'data/{chat_id}-st_messages')
@@ -101,7 +110,8 @@ for message in st.session_state.messages:
 # React to user input
 if prompt := st.chat_input('Your message here...'):
     # Save this as a chat for later
-    st.session_state.chat_id = st.session_state.chat_id or new_chat_id
+    if(st.session_state.chat_id==None):
+        st.session_state.chat_id = new_chat_id
 
     # Display user message in chat message container
     with st.chat_message('user'):
